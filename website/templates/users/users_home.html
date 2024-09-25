@@ -1,0 +1,38 @@
+
+
+{% extends 'layout.html' %}
+{% block content %}
+{% include 'users/users_navbar.html' %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}">
+
+<div class="container">
+    <ul>
+        {% for spi in specialissues.items %}
+        <li class="special-issue">
+            <h3><a href="/detalhes/{{ spi.id }}">{{ spi.titulo }}</a></h3>
+            <p class="date">Prazo para submissão: {{ spi.prazo.strftime('%d/%m/%Y') }}</p>
+            
+        </li>
+        {% endfor %}
+
+        <div class="col">
+            {% for page_num in specialissues.iter_pages() %}
+            {% if page_num%}
+
+            {% if specialissues.page == page_num %}
+            <a href="{{url_for('home', page=page_num)}}" class="btn btn-primary btn-sm">{{page_num}}</a>
+            {% else %}
+            <a href="{{url_for('home', page=page_num)}}" class="btn btn-outline-primary btn-sm">{{page_num}}</a>
+            {% endif %}
+            {% else %}
+            ...
+            {% endif %}
+            {% endfor %}</div>
+        
+
+    </ul>
+</div>
+
+{% include 'footer.html' %}
+{% endblock content %}

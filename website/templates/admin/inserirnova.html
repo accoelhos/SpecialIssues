@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% include 'navbar.html' %}
+{% include '_messages.html' %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/inserir.css') }}">
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<div class="text-center h1 h1-bg" style="color: #0a497e; margin-top: 17px; font-size: 35px;"> Inserir nova Special Issue </div>
+<div class="container my-4">
+
+    {% from "suporteenvio.html" import render_field %}
+    <form method="post" enctype="multipart/form-data">
+        <div class="text-center">
+            {{ render_field(form.editora, class="form-control-sm") }}
+            {{ render_field(form.revista, class="form-control-sm") }}
+            {{ render_field(form.titulo, class="form-control-sm") }}
+            {{ render_field(form.link, class="form-control-sm") }}
+            {{ render_field(form.prazo, class="form-control-sm datepicker") }}
+            {{ render_field(form.datanot, class="form-control-sm datepicker") }}
+            <div class="text-center">
+                <label for="{{ form.detalhes.id }}" style="font-weight: bold;">Detalhes</label>
+            </div>
+            <div class="text-center">
+                <textarea name="{{ form.detalhes.name }}" id="{{ form.detalhes.id }}" class="form-control-sm resize-diagonal" rows="3">{{ form.detalhes.data }}</textarea>
+            </div>
+            
+        </div>
+        <p class="text-center">
+            <div class="mt-3 text-center">
+                <button type="submit" name="submit_and_back" class="btn btn-primary">Enviar e voltar ao Menu Principal</button>
+    <button type="submit" name="submit_and_insert" class="btn btn-success">Enviar e Inserir Nova Special Issue</button>
+            </div>
+        </p>
+    </form>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      flatpickr(".datepicker", {
+          dateFormat: "d/m/Y" 
+          appendTo: document.querySelector('.datepicker-wrapper') 
+
+      });
+  });
+</script>
+{% include 'footer.html' %}
+
+{% endblock content %}
