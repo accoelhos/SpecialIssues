@@ -8,7 +8,7 @@ Além de armazenar, o site mostra as Special Issues disponíveis e permite que u
 - Após clonar o repositório, abrir um terminal:
 - Entrar na pasta do projeto:
 ```
-cd proj_SpecialIssues
+cd SpecialIssues
 ```
 - Instalar o ambiente virtual
 ```
