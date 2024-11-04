@@ -58,18 +58,20 @@ def importar_planilha(info, nome):
             revista = row['titulo']   # Elsevier inverte revista com título
             prazo = row['link']       # Elsevier inverte link com prazo
             link = row['prazo']       # Elsevier inverte link com prazo
+            detalhes= row['detalhes']
         else:
             titulo = row['titulo']
             revista = row['revista']
             link = row['link']
-            prazo = row['prazo']
+            prazo = row['detalhes'] #IEE inverte detalhes com prazo
+            detalhes= row['prazo']
         
         # Inserir dados no banco de dados, tratando duplicatas
         try:
             cursor.execute('''
                 INSERT INTO spi (editora, revista, titulo, link, prazo, datanot, detalhes) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (editora, revista, titulo, link, prazo, datanot, row['detalhes']))
+            ''', (editora, revista, titulo, link, prazo, datanot, detalhes))
         except sqlite3.IntegrityError as e:
             print(f"Erro ao inserir '{titulo}': {e}")
 
