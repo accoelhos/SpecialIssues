@@ -5,24 +5,24 @@ from datetime import datetime
 # Defina as informações de cada planilha
 planilhas = {
     "IEEE": {
-        "arquivo": "WS_IEEE.xlsx",
+        "arquivo": "instance/WS_IEEE.xlsx",
         "colunas": ['Tipo', 'Título', 'Link', 'Deadline', 'Resumo'],
         "editora": "IEEE"
     },
     "Elsevier": {
-        "arquivo": "WS_ELSEVIER.xlsx",
+        "arquivo": "instance/WS_ELSEVIER.xlsx",
         "colunas": ['Título', 'Revista', 'Submission Deadline', 'Link', 'Resumo'],
         "editora": "Elsevier"
     },
     "Springer": {
-        "arquivo": "WS_Springer.xlsx",
+        "arquivo": "instance/WS_Springer.xlsx",
         "colunas": ['Nome do Jornal', 'Link do Jornal', 'Título do Update', 'Link do Update', 'Prazo de Submissão', 'Resumo'],
         "editora": "Springer"
     }
 }
 
 # Conexão com o banco de dados SQLite
-conn = sqlite3.connect('specialissues.db')
+conn = sqlite3.connect('instance/specialissues.db')
 cursor = conn.cursor()
 
 # Função para carregar planilha e inserir dados no banco
