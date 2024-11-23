@@ -7,7 +7,7 @@ class SPI(db.Model):
     revista = db.Column(db.String, unique=False, nullable=False)
     titulo = db.Column(db.String, unique=False, nullable=False)
     link = db.Column(db.String, unique=True, nullable=False)
-    prazo = db.Column(db.Date, unique=False, nullable=False)
+    prazo = db.Column(db.String, unique=False, nullable=False)
     datanot = db.Column(db.Date, unique=False, nullable=False)
     detalhes = db.Column(db.String, unique=False, nullable=False)
 
