@@ -1,5 +1,4 @@
 
-#atualizado 07/12
 from flask import render_template, session, request, url_for, flash, redirect, Flask
 from website import app, db, bcrypt
 from .forms import RegistrationForm, login
@@ -12,7 +11,8 @@ app.secret_key='123456789'
 app.config['SESSION_COOKIE_NAME'] = 'sessao'
 app.config['SESSION_PERMANENT'] = True
 
-@app.route('/admin/home') #pagina inicial
+#pagina inicial
+@app.route('/admin/home')
 
 def admin_home():
     
@@ -22,18 +22,20 @@ def admin_home():
         
     return render_template ('admin/home.html', title= 'gerenciar', specialissues= specialissues)
 
-@app.route('/admin/sair')
+#sair da sessao
+@app.route('/admin/sair') 
 def sair():
     session.pop('usuario', None)
     flash('Você saiu da sessão', 'success')
     return redirect(url_for('admin_home'))
 
-@app.route('/admin/search', methods=['GET', 'POST'])
+#busca
+@app.route('/admin/search', methods=['GET', 'POST']) 
 def search():
     if request.method == 'POST':
         form = request.form
         search_value = form['search-box']
-        session['search_value'] = search_value  # Armazena na sessão
+        session['search_value'] = search_value  #Armazena na sessão
         search = f"%{search_value}%"
         specialissues = SPI.query.filter(SPI.titulo.like(search)).paginate(page=1, per_page=20)
         return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
@@ -49,8 +51,8 @@ def search():
 
     return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
 
-
-@app.route('/admin', methods=['GET', 'POST']) 
+#login do admin
+@app.route('/admin', methods=['GET', 'POST'])  
 def loginform():
     form = login(request.form)
     if request.method == "POST" and form.validate():
@@ -64,8 +66,8 @@ def loginform():
             
     return render_template('admin/login.html', form=form, title='login')
 
-
-@app.route('/admin/inserirnovaspecialissue', methods=['GET', 'POST']) #pagina de adicionar novas s.i
+#inserir novas chamadas manualmente
+@app.route('/admin/inserirnovaspecialissue', methods=['GET', 'POST']) 
 def inserirnova():
     if 'usuario' not in session:
         flash (f'Login necessário', 'danger')
@@ -87,7 +89,9 @@ def inserirnova():
             
         return render_template('admin/inserirnova.html', form=form, title = "Página de envios")
     
-@app.route('/admin/gerenciar', methods=['GET', 'POST'])
+
+#gerenciar special issues    
+@app.route('/admin/gerenciar', methods=['GET', 'POST']) 
 def gerenciar():
     if 'usuario' not in session:
         flash (f'Login necessário', 'danger')
@@ -97,6 +101,7 @@ def gerenciar():
         
     return render_template ('admin/gerenciar.html', title= 'gerenciar', specialissues= specialissues)
 
+#detalhes das si
 @app.route('/admin/detalhes/<int:id>', methods=['GET'])
 def detalhes(id):
     if 'usuario' not in session:
@@ -110,6 +115,7 @@ def detalhes(id):
             flash('Special Issue não encontrado', 'danger')
             return redirect('/admin/gerenciar')
 
+#editar alguma chamada
 @app.route('/admin/editar/<int:id>', methods=['GET', 'POST']) 
 def editar(id):
     if 'usuario' not in session:
@@ -148,7 +154,7 @@ def editar(id):
 
     return render_template('admin/editar.html', spi=spi, title="Editar", form=form)
 
-
+#deletar special issue do bd
 @app.route('/admin/deletar/<int:id>', methods=['GET', 'POST'])
 def deletar(id):
     spi = SPI.query.get(id) 
