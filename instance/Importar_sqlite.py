@@ -25,6 +25,31 @@ planilhas = {
 conn = sqlite3.connect('instance/specialissues.db')
 cursor = conn.cursor()
 
+# Verificar se a tabela já existe
+cursor.execute('''
+SELECT name FROM sqlite_master WHERE type='table' AND name='spi';
+''')
+tabela_existe = cursor.fetchone()
+
+# Criar a tabela apenas se ela não existir
+if not tabela_existe:
+    cursor.execute('''
+    CREATE TABLE spi (
+        id INTEGER NOT NULL PRIMARY KEY,
+        editora VARCHAR NOT NULL,
+        revista VARCHAR NOT NULL,
+        titulo VARCHAR NOT NULL UNIQUE,
+        link VARCHAR NOT NULL UNIQUE,
+        prazo VARCHAR NOT NULL,
+        datanot VARCHAR NOT NULL,
+        detalhes VARCHAR NOT NULL
+    )
+    ''')
+    print("Tabela 'spi' criada com sucesso.")
+else:
+    print("Tabela 'spi' já existe. Nenhuma alteração foi feita.")
+
+
 # Função para carregar planilha e inserir dados no banco
 def importar_planilha(info, nome):
     # Verifique os nomes das colunas para garantir que estão corretos
