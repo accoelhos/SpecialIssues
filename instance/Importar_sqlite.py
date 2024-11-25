@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 from datetime import datetime
 
-# Defina as informações de cada planilha
+# Definindo as informações de cada planilha
 planilhas = {
     "IEEE": {
         "arquivo": "instance/WS_IEEE.xlsx",
@@ -21,17 +21,17 @@ planilhas = {
     }
 }
 
-# Conexão com o banco de dados SQLite
+# Conectando com o banco de dados SQLite
 conn = sqlite3.connect('instance/specialissues.db')
 cursor = conn.cursor()
 
-# Função para carregar planilha e inserir dados no banco
+# carregar planilha e inserir dados no bd
 def importar_planilha(info, nome):
-    # Verifique os nomes das colunas para garantir que estão corretos
+    # Verificando os nomes das colunas para garantir que estão corretos
     df = pd.read_excel(info["arquivo"], sheet_name=0)  # Carregar a planilha sem especificar as colunas
     print(f"Colunas reais da planilha {nome}: {df.columns}")
     
-    # Verifique se as colunas que você quer usar realmente existem na planilha
+    # Verificando se as colunas existem na planilha
     if set(info["colunas"]).issubset(df.columns):
         # Carregar a planilha com as colunas corretas
         df = pd.read_excel(info["arquivo"], usecols=info["colunas"])
@@ -39,7 +39,7 @@ def importar_planilha(info, nome):
         print(f"As colunas especificadas não foram encontradas na planilha {nome}. Verifique os nomes.")
         return
 
-    # Para a planilha Springer, excluir a coluna 'Link do jornal' (verifique se realmente existe)
+    # Para a planilha Springer, excluir a coluna 'Link do jornal'
     if nome == "Springer" and 'Link do Jornal' in df.columns:
         df = df.drop(columns=['Link do Jornal'])
     
