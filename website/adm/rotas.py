@@ -79,8 +79,10 @@ def inserirnova():
             sucesso=True
             if sucesso:
                 if 'submit_and_back' in request.form:
+                    flash('Special Issue inserida', 'success')
                     return redirect('/admin/home')
                 elif 'submit_and_insert' in request.form:
+                    flash('Special Issue inserida', 'success')
                     return render_template('admin/inserirnova.html', form=form)
                 else:
                     flash(f'todos os campos são obrigatórios!', 'danger')
