@@ -14,7 +14,7 @@ class SPI(db.Model):
 class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     usuario = db.Column(db.String, unique=True, nullable=False)
-    senha = db.Column(db.String, unique=True, nullable=False)
+    senha = db.Column(db.String, unique=False, nullable=False)
     
     
 with app.app_context():
