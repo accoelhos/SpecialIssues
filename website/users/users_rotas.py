@@ -1,11 +1,12 @@
 # user_routes.py
+# aqui estão as rotas de um usuário comum (Não admin)
+# esse usuário comum só tem acesso a home, detalhes e busca
+
 from flask import Blueprint, render_template, session, request, flash, redirect, url_for
 from website import db, app
 from website.adm.models import SPI
 
-
-
-
+#pagina inicial de usuario
 @app.route('/')
 def home():
     per_page = 10
@@ -13,6 +14,7 @@ def home():
     specialissues = SPI.query.order_by(SPI.prazo.asc()).paginate(page=page, per_page=per_page)
     return render_template('users/users_home.html', title='Home para Usuários', specialissues=specialissues)
 
+#detalhes das si 
 @app.route('/detalhes/<int:id>', methods=['GET'])
 def users_detalhes(id):
     
@@ -23,6 +25,7 @@ def users_detalhes(id):
         flash('Special Issue não encontrado', 'danger')
         return redirect(url_for('user.home'))
 
+#busca de user
 @app.route('/search', methods=['GET', 'POST'])
 def users_search():
     if request.method == 'POST':
@@ -31,7 +34,7 @@ def users_search():
         session['search_value'] = search_value  # Armazena na sessão
         search = f"%{search_value}%"
         
-        # Atualiza a consulta para incluir tanto título quanto descrição
+        #a consulta para inclui tanto título quanto descrição -> like
         specialissues = SPI.query.filter(
             SPI.titulo.like(search) | SPI.detalhes.like(search)
         ).paginate(page=1, per_page=20)
