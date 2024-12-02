@@ -37,7 +37,7 @@ def users_search():
     # Para requisições GET
     search_value = request.args.get('search_value', '')  # Obtém o valor da busca da URL
     page = request.args.get('page', 1, type=int)
-    per_page = 20
+    per_page = 10
 
     if search_value:
         specialissues = SPI.query.filter(
