@@ -31,8 +31,6 @@ def users_search():
     if request.method == 'POST':
         form = request.form
         search_value = form['search-box']
-        search = f"%{search_value}%"
-        
         # Redireciona para a rota GET com o valor da busca na URL
         return redirect(url_for('users_search', search_value=search_value))
     
