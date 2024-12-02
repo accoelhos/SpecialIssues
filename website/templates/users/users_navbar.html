@@ -38,7 +38,7 @@
       <div class="d-flex">
         <form action="/search" method="POST">
           <div class="search-form">
-              <input type="text" class="form-control" placeholder="Pesquisar palavras-chave" autofocus="autofocus" name="search-box" value="{{ session.get('search_value', '') }}">
+              <input type="text" class="form-control" placeholder="Pesquisar palavras-chave" autofocus="autofocus" name="search-box" value="{{ search_value }}">
               <button type="submit" class="search-button"><i class="fas fa-search"></i></button>
 
           </div>
