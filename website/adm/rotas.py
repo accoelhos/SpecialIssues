@@ -30,26 +30,51 @@ def sair():
     return redirect(url_for('admin_home'))
 
 #busca
-@app.route('/admin/search', methods=['GET', 'POST']) 
+
+@app.route('/admin/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
         form = request.form
         search_value = form['search-box']
-        session['search_value'] = search_value  #Armazena na sessão
-        search = f"%{search_value}%"
-        specialissues = SPI.query.filter(SPI.titulo.like(search)).paginate(page=1, per_page=20)
-        return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
-    else:
-        page = request.args.get('page', 1, type=int)
-        per_page = 20
+        # Redireciona para a rota GET com o valor da busca na URL
+        return redirect(url_for('search', search_value=search_value))
+    
+    # Para requisições GET
+    search_value = request.args.get('search_value', '')  # Obtém o valor da busca da URL
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
 
-        search_value = session.get('search_value', '')  # Obtém da sessão
-        if page == 1 and search_value:
-            specialissues = SPI.query.filter(SPI.titulo.like(f"%{search_value}%")).paginate(page=1, per_page=10)
-        else:
-            specialissues = SPI.query.paginate(page=page, per_page=per_page)
+    if search_value:
+        specialissues = SPI.query.filter(
+            SPI.titulo.like(f"%{search_value}%") | SPI.detalhes.like(f"%{search_value}%")
+        ).paginate(page=page, per_page=per_page)
+    else:
+        specialissues = SPI.query.paginate(page=page, per_page=per_page)
 
     return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
+
+
+
+
+# def search():
+#     if request.method == 'POST':
+#         form = request.form
+#         search_value = form['search-box']
+#         session['search_value'] = search_value  #Armazena na sessão
+#         search = f"%{search_value}%"
+#         specialissues = SPI.query.filter(SPI.titulo.like(search)).paginate(page=1, per_page=20)
+#         return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
+#     else:
+#         page = request.args.get('page', 1, type=int)
+#         per_page = 20
+
+#         search_value = session.get('search_value', '')  # Obtém da sessão
+#         if page == 1 and search_value:
+#             specialissues = SPI.query.filter(SPI.titulo.like(f"%{search_value}%")).paginate(page=1, per_page=10)
+#         else:
+#             specialissues = SPI.query.paginate(page=page, per_page=per_page)
+
+#     return render_template('admin/busca.html', specialissues=specialissues, search_value=search_value)
 
 #login do admin
 @app.route('/admin', methods=['GET', 'POST'])  

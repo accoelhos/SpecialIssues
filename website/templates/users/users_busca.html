@@ -9,11 +9,11 @@
             {% for spi in specialissues.items %}
                 <div class="col-md-12">
                     <div class="card special-issue">
-                        <a href="{{ url_for('users_detalhes', id=spi.id) }}" style="text-decoration: none; color: inherit;"> <!-- Link cobrindo todo o cartão -->
+                        <a href="{{ url_for('users_detalhes', id=spi.id) }}" style="text-decoration: none; color: inherit;">
                             <div class="card-body">
                                 <h5 class="card-title">{{ spi.titulo }}</h5>
                                 <p class="date">Prazo para submissão: {{ spi.prazo }}</p>
-                                <p class="description">{{ spi.detalhes[:300] }}...</p> <!-- Exibir os primeiros 200 caracteres da descrição -->
+                                <p class="description">{{ spi.detalhes[:300] }}...</p>
                             </div>
                         </a>
                     </div>
@@ -23,21 +23,18 @@
             <li class="aviso">Sem resultados para essa pesquisa</li>
         {% endif %}
     </div>
-
     <div class="col text-center">
-        <form method="POST">
-            {% for page_num in specialissues.iter_pages() %}
-                {% if page_num %}
-                    {% if specialissues.page == page_num %}
-                        <a href="{{ url_for('users_search', page=page_num) }}" class="btn btn-primary btn-sm">{{ page_num }}</a>
-                    {% else %}
-                        <a href="{{ url_for('users_search', page=page_num) }}" class="btn btn-outline-primary btn-sm">{{ page_num }}</a>
-                    {% endif %}
-                {% else %}
-                    ...
-                {% endif %}
-            {% endfor %}
-        </form>
+        {% for page_num in specialissues.iter_pages() %}
+        {% if page_num %}
+            {% if specialissues.page == page_num %}
+            <a href="{{ url_for('users_search', page=page_num, search_value=search_value) }}" class="btn btn-primary btn-sm">{{ page_num }}</a>
+            {% else %}
+            <a href="{{ url_for('users_search', page=page_num, search_value=search_value) }}" class="btn btn-outline-primary btn-sm">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
 

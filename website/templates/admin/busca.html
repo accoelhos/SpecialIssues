@@ -25,19 +25,17 @@
     </div>
 
     <div class="col text-center">
-        <form method="POST">
-            {% for page_num in specialissues.iter_pages() %}
-                {% if page_num %}
-                    {% if specialissues.page == page_num %}
-                        <a href="{{ url_for('users_search', page=page_num) }}" class="btn btn-primary btn-sm">{{ page_num }}</a>
-                    {% else %}
-                        <a href="{{ url_for('users_search', page=page_num) }}" class="btn btn-outline-primary btn-sm">{{ page_num }}</a>
-                    {% endif %}
-                {% else %}
-                    ...
-                {% endif %}
-            {% endfor %}
-        </form>
+        {% for page_num in specialissues.iter_pages() %}
+        {% if page_num %}
+            {% if specialissues.page == page_num %}
+            <a href="{{ url_for('search', page=page_num, search_value=search_value) }}" class="btn btn-primary btn-sm">{{ page_num }}</a>
+            {% else %}
+            <a href="{{ url_for('search', page=page_num, search_value=search_value) }}" class="btn btn-outline-primary btn-sm">{{ page_num }}</a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
 
