@@ -18,6 +18,12 @@ planilhas = {
         "arquivo": "instance/WS_Springer.xlsx",
         "colunas": ['Nome do Jornal', 'Link do Jornal', 'Título do Update', 'Link do Update', 'Prazo de Submissão', 'Resumo'],
         "editora": "Springer"
+    },
+    "Wiley": {
+        "arquivo": "instance/WS_WILEY.xlsx",
+        "colunas": ['Revista', 'Titulo','Link', 'detalhes',],
+        "editora": "Wiley",
+        
     }
 }
 
@@ -28,7 +34,7 @@ cursor = conn.cursor()
 # Verificar se a tabela já existe
 cursor.execute('''
 SELECT name FROM sqlite_master WHERE type='table' AND name='spi';
-''')
+''')    
 tabela_existe = cursor.fetchone()
 
 # Criar a tabela apenas se ela não existir
@@ -71,6 +77,9 @@ def importar_planilha(info, nome):
     # Renomear as colunas do DataFrame para padronizar com a tabela do banco
     if nome == "Springer":
         df.columns = ['revista', 'link_update', 'titulo', 'prazo', 'detalhes']
+    
+    elif nome =="Wiley":
+        df.columns = ['revista', 'titulo', 'link', 'detalhes']
     else:
         df.columns = ['revista', 'titulo', 'link', 'prazo', 'detalhes']
     
@@ -87,6 +96,7 @@ def importar_planilha(info, nome):
             prazo = row['link']
             link = row['prazo']
             detalhes = row['detalhes']
+            
         # Ajustes para Springer: título e link de update
         elif nome == "Springer":
             titulo = row['link_update']
@@ -94,6 +104,14 @@ def importar_planilha(info, nome):
             link = row['titulo']  # Link do update da Springer
             prazo = row['prazo']
             detalhes = row['detalhes']
+
+        elif nome == "Wiley":
+            titulo = row['titulo']
+            revista = row['revista']
+            link = row['link']
+            prazo = "Prazo não informado"
+            detalhes = row['detalhes']
+
         else:
             titulo = row['titulo']
             revista = row['revista']
